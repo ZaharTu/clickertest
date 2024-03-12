@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ClickerQPro</string>
+    <string name="UPSpeed">Ускорить</string>
+    <string-array name="MarketName">
+        <item>Лопата</item>
+        <item>Перчатки</item>
+        <item>Раб</item>
+        <item>Плантация</item>
+        <item>Трактор</item>
+        <item>Деревня</item>
+    </string-array>
+    <string-array name="MarketAbout">
+        <item>Не только грядку вскопать,\nно и дать кому-то по спине</item>
+        <item>Никто не хочет мозоли</item>
+        <item>Тупой</item>
+        <item>Капец как много рабов</item>
+        <item>*ФЫРЧИТ*</item>
+        <item>Капец как много \nСВОБОДНЫХ людей</item>
+    </string-array>
+    <string-array name="PotatoName">
+        <item>Жёлтая картошка</item>
+        <item>Красная картошка</item>
+    </string-array>
+    <string-array name="MarketHint">
+        <item>Ускорение за клик лучше</item>
+        <item>Увеличивает доход</item>
+        <item>Затычка</item>
+        <item>Затычка</item>
+        <item>Затычка</item>
+        <item>Затычка</item>
+    </string-array>
+</resources>
