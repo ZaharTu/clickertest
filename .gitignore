@@ -29,4 +29,4 @@ proguard/
 
 # Log Files
 *.log
-/app/src/main/java/com/example/clickertest/Repository.java
+/app/
