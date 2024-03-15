@@ -10,10 +10,10 @@
         <item>Деревня</item>
     </string-array>
     <string-array name="MarketAbout">
-        <item>Не только грядку вскопать,\nно и дать кому-то по спине</item>
+        <item>Грядку вскопает,\nи по спине ударит</item>
         <item>Никто не хочет мозоли</item>
-        <item>Тупой</item>
-        <item>Капец как много рабов</item>
+        <item>Садит картошку\nвместо тебя</item>
+        <item>Очень много рабов</item>
         <item>*ФЫРЧИТ*</item>
         <item>Капец как много \nСВОБОДНЫХ людей</item>
     </string-array>
@@ -22,9 +22,9 @@
         <item>Красная картошка</item>
     </string-array>
     <string-array name="MarketHint">
-        <item>Ускорение за клик лучше</item>
-        <item>Увеличивает доход</item>
-        <item>Затычка</item>
+        <item>+1$ за клик</item>
+        <item>+1 Ускорение</item>
+        <item>+1 Желтая картошка</item>
         <item>Затычка</item>
         <item>Затычка</item>
         <item>Затычка</item>

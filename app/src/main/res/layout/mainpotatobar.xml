@@ -35,26 +35,20 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@id/btnPotato"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ImageRecyclerBar" />
 
             <ProgressBar
                 android:id="@+id/progressPotato"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnPotato"
-                app:layout_constraintStart_toEndOf="@+id/ImageRecyclerBar"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnPotato"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/UPSpeed"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/ImageRecyclerBar"
+                app:layout_constraintTop_toBottomOf="@+id/TxtRecyclerBar" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

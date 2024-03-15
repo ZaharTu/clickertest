@@ -45,8 +45,19 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull IM_adapter.MyViewHolder holder, int position) {
         holder.tvName.setText(itemArrayList.get(position).getNameItem());
         holder.tvAbout.setText(itemArrayList.get(position).getAboutItem());
-        holder.tvCost.setText(String.valueOf(itemArrayList.get(position).getCost()));
-        holder.tvCount.setText(String.valueOf(itemArrayList.get(position).getCountBuy()));
+        holder.tvCost.setText("$"+itemArrayList.get(position).getCost());
+
+        switch (itemArrayList.get(position).getCountBuy()){
+            case 1:
+                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупка");
+                break;
+            case 2:
+            case 3:
+            case 4:
+                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупки");
+            default:
+                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупок");
+        }
         holder.tvHint.setText(String.valueOf(itemArrayList.get(position).getHintItem()));
         holder.imageView.setImageResource(itemArrayList.get(position).getImage());
         holder.button.setOnClickListener(v -> {

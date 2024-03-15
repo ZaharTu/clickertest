@@ -31,11 +31,11 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
     Repository repository = Repository.newInstance();
     ProgressItem progressItem;
     Handler handler;
-    ProgressBarParallel parallel;
+
     public ProgressBarAdapter(Context context, ArrayList<Potato> potatoArrayList){
         this.context=context;
         this.potatoArrayList=potatoArrayList;
-
+        this.handler=new Handler();
     }
     @NonNull
     @Override
@@ -51,9 +51,20 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
         holder.imageView.setImageResource(potatoArrayList.get(position).getImage());
         holder.progressBar.setMax(repository.getMaxDuration(position));
         progressItem=new ProgressItem(repository.getMaxDuration(position),holder.progressBar);
-        parallel=new ProgressBarParallel(progressItem,holder.button,position);
-        holder.button.setOnClickListener(v -> repository.IncrProgressBar(position));
-        parallel.start();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int progress = repository.getProgress(position)+ repository.getIncrProgressBar(); // Увеличение прогресса на 1
+                if (progress <= repository.getMaxDuration(position)) {
+                    holder.progressBar.setProgress(progress);
+                    repository.setProgress(position,progress);
+                } else {
+                    holder.progressBar.setProgress(0);
+                    repository.IncrBalancePotato(position);
+                }
+                handler.postDelayed(this, 100);
+            }
+        }, 100);
     }
 
 
@@ -65,13 +76,11 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
         ImageView imageView;
         TextView tvName;
         ProgressBar progressBar;
-        Button button;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.ImageRecyclerBar);
             tvName = itemView.findViewById(R.id.TxtRecyclerBar);
             progressBar = itemView.findViewById(R.id.progressPotato);
-            button=itemView.findViewById(R.id.btnPotato);
         }
     }
 }

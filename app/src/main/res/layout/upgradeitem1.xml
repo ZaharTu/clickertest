@@ -31,8 +31,8 @@
 
                 <ImageView
                     android:id="@+id/ImageItem"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:background="@color/BackMarketItemImage"
                     android:foreground="@drawable/okantovka"
                     android:scaleType="centerCrop"
@@ -45,18 +45,21 @@
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="@color/NameMarketItem"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imagecard" />
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/ItemAbout"
+                app:layout_constraintStart_toEndOf="@+id/imagecard"
+                android:layout_marginStart="20dp"/>
 
             <TextView
                 android:id="@+id/ItemAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
+
                 android:text="about"
                 android:textColor="@color/TextMarketItem"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/ItemHint"
                 app:layout_constraintStart_toEndOf="@+id/imagecard"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,28 +70,27 @@
                 android:layout_marginStart="10dp"
                 android:text="hint"
                 android:textColor="@color/Hint"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintStart_toEndOf="@+id/imagecard"
-                />
+                app:layout_constraintStart_toEndOf="@+id/imagecard" />
 
             <TextView
                 android:id="@+id/ItemCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_margin="10dp"
                 android:text="48$"
                 android:textColor="@color/CostMarketItem"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/ItemCount"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btnBuy"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                style="@style/MyButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/ButtonBackground"
                 android:text="Buy"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -97,13 +99,12 @@
                 android:id="@+id/ItemCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="5 раз"
+                android:text="5 покупок"
                 android:textColor="@color/CostMarketItem"
-                android:textSize="20sp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/btnBuy"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/btnBuy" />
+                android:layout_marginEnd="5dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

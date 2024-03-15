@@ -47,9 +47,9 @@ public class FIleRedactor {
                             String item = MarketItems[i];
                             if (key.equals(item)) {
                                 if (item.equals("Лопат")){
-                                    repository.setIncrProgressBar(Integer.parseInt(value)/2);
-                                } else if (item.equals("Перчаток")) {
                                     repository.setAddBalanceClick(Integer.parseInt(value)+1);
+                                } else if (item.equals("Перчаток")) {
+                                    repository.setIncrProgressBar(Integer.parseInt(value));
                                 }
                                 repository.setMarketElem(i, Integer.parseInt(value));
                             }
