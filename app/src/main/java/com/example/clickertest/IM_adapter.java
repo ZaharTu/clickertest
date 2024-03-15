@@ -1,6 +1,7 @@
 package com.example.clickertest;
 
 import android.content.Context;
+import android.database.Observable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.clickertest.databinding.ActivityMarketBinding;
 
 import java.util.ArrayList;
+
+
 
 public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
     Context context;
@@ -46,7 +49,6 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
         holder.tvName.setText(itemArrayList.get(position).getNameItem());
         holder.tvAbout.setText(itemArrayList.get(position).getAboutItem());
         holder.tvCost.setText("$"+itemArrayList.get(position).getCost());
-
         switch (itemArrayList.get(position).getCountBuy()){
             case 1:
                 holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупка");

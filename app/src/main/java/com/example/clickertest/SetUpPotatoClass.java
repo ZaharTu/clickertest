@@ -8,10 +8,12 @@ import java.util.ArrayList;
 
 public class SetUpPotatoClass {
     private static SetUpPotatoClass SetInstence = null;
-    private Context mcontext;
     private ArrayList<Potato> potatoArrayList ;
+    private Context mcontext;
+    private final Repository repository = Repository.newInstance();
     int [] potatoImage={R.drawable.yellowpotato,R.drawable.redpotato};
     String [] potatoName;
+    int[] market;
 
     public static SetUpPotatoClass newInstance(Context context){
         if (SetInstence == null) {
@@ -26,12 +28,19 @@ public class SetUpPotatoClass {
         for (int i = 0; i < potatoImage.length; i++) {
             potatoArrayList.add(new Potato(
                     potatoName[i],
-                    potatoImage[i],
-                    i)
+                    potatoImage[i]
+                    )
             );
         }
+        market=repository.getMarket();
+        for (int i = 0; i < market[2]; i++) {
+            potatoArrayList.add(0,new Potato(potatoName[0],potatoImage[0]));
+            repository.AddMaxDurAndProg();
+        }
     }
-
+    public Potato AddFirstPotato(){
+        return new Potato(potatoName[0],potatoImage[0]);
+    }
     public ArrayList<Potato> getPotatoArrayList() {
         return potatoArrayList;
     }

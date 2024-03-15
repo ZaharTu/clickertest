@@ -1,16 +1,19 @@
 package com.example.clickertest;
 
+
+
 public class Repository {
     private static Repository Repinstance = null;
     private static int Balance;
     private int AddBalanceClick = 1;
     private int IncrProgressBar;
-    private final int[] MaxDurations={49,103};
-    private final int[] AddBalancePotatoes={1,2};
+    private int[] MaxDurations={49,200};
+    private int[] AddBalancePotatoes={1,5};
     private final int[] Market= new int[6];
-    private final int[] ProgressMas={0,0};
+    private int[] ProgressMas={0,0};
+    private boolean flagBuySlave;
     private Repository() {
-        Balance=0;
+        Balance = 0;
     }
     public static Repository newInstance() {
         if (Repinstance == null) {
@@ -24,14 +27,14 @@ public class Repository {
     public int getMaxDuration(int position){
         return MaxDurations[position];
     }
+    public boolean isFlagBuySlave() {
+        return flagBuySlave;
+    }
     public int getBalance() {
         return Balance;
     }
     public int getIncrProgressBar() {
         return IncrProgressBar;
-    }
-    public void setIncrProgressBar(int incrProgressBar) {
-        this.IncrProgressBar=incrProgressBar;
     }
     public int getAddBalanceClick() {
         return AddBalanceClick;
@@ -47,6 +50,9 @@ public class Repository {
     public void setMarketElem(int position, int count) {
         Market[position]=count;
     }
+    public void setIncrProgressBar(int incrProgressBar) {
+        this.IncrProgressBar=incrProgressBar;
+    }
     public void setAddBalanceClick(int addBalanceClick) {
         AddBalanceClick = addBalanceClick;
     }
@@ -60,23 +66,36 @@ public class Repository {
         Balance+=getAddBalancePotato(position);
         ProgressMas[position]=0;
     }
+    public void AddMaxDurAndProg(){
+        int[] newDur= new int[MaxDurations.length+1];
+        int[] newProg= new int[ProgressMas.length+1];
+        int[] newAddBalance= new int[AddBalancePotatoes.length+1];
+        newDur[0]=MaxDurations[0];
+        newAddBalance[0]=AddBalancePotatoes[0];
+        newProg[0]=0;
+        System.arraycopy(MaxDurations,0,newDur,1,MaxDurations.length);
+        System.arraycopy(AddBalancePotatoes,0,newAddBalance,1,AddBalancePotatoes.length);
+        System.arraycopy(ProgressMas,0,newProg,1,ProgressMas.length);
+        MaxDurations=newDur;
+        ProgressMas=newProg;
+        AddBalancePotatoes=newAddBalance;
+        flagBuySlave=false;
+    }
     public boolean BuyItem(int cost,int position){
         if (Balance>=cost){
             Balance-=cost;
             Market[position]++;
-            switch (position){
-                case 0:
-                    IncrAddBalance();
-                    break;
-                case 1:
-                    setIncrProgressBar(Market[0]);
-                    break;
+            Runnable[] actions = {
+                    this::IncrAddBalance,
+                    ()->setIncrProgressBar(Market[0]),
+                    ()->flagBuySlave=true,
+            };
+            if (position < actions.length) {
+                actions[position].run();
             }
             return true;
         }
         return false;
     }
-    public int[] getMaxDurations() {
-        return MaxDurations;
-    }
+
 }

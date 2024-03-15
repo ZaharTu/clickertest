@@ -50,6 +50,8 @@ public class FIleRedactor {
                                     repository.setAddBalanceClick(Integer.parseInt(value)+1);
                                 } else if (item.equals("Перчаток")) {
                                     repository.setIncrProgressBar(Integer.parseInt(value));
+                                }else if (item.equals("Рабов")){
+                                    repository.setMarketElem(2,Integer.parseInt(value));
                                 }
                                 repository.setMarketElem(i, Integer.parseInt(value));
                             }

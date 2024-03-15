@@ -38,6 +38,7 @@
         android:background="@color/BackMain"
         android:scaleType="centerInside"
         android:src="@drawable/potato"
+        android:soundEffectsEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/btnmarket"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@
     <ImageButton
         android:id="@+id/btnmarket"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:background="@color/btnbottom"
         android:scaleType="centerInside"
@@ -58,7 +59,7 @@
     <ImageButton
         android:id="@+id/btnskip"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:background="@color/btnbottom"
         android:scaleType="centerInside"

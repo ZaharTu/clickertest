@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.clickertest.IM_adapter;
 import com.example.clickertest.R;
 import com.example.clickertest.Repository;
+import com.example.clickertest.SetUpPotatoClass;
 
 import java.util.ArrayList;
 import java.util.logging.LogRecord;
@@ -29,7 +30,6 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
     Context context;
     ArrayList<Potato> potatoArrayList ;
     Repository repository = Repository.newInstance();
-    ProgressItem progressItem;
     Handler handler;
 
     public ProgressBarAdapter(Context context, ArrayList<Potato> potatoArrayList){
@@ -50,7 +50,6 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
         holder.tvName.setText(potatoArrayList.get(position).getName());
         holder.imageView.setImageResource(potatoArrayList.get(position).getImage());
         holder.progressBar.setMax(repository.getMaxDuration(position));
-        progressItem=new ProgressItem(repository.getMaxDuration(position),holder.progressBar);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -65,8 +64,12 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
                 handler.postDelayed(this, 100);
             }
         }, 100);
+
     }
 
+    public void setPotatoArrayList(ArrayList<Potato> potatoArrayList) {
+        this.potatoArrayList = potatoArrayList;
+    }
 
     @Override
     public int getItemCount() {

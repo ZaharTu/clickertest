@@ -1,18 +1,12 @@
 package com.example.clickertest.ProgressBar;
 
-import com.example.clickertest.Repository;
 
 public class Potato {
     private String Name;
     private int Image;
-    private int maxDur;
-    private int addBalance;
-    Repository repository = Repository.newInstance();
-    public Potato(String name, int image,int position) {
+    public Potato(String name, int image) {
         Name = name;
         Image = image;
-        maxDur=repository.getMaxDuration(position);
-        addBalance=repository.getAddBalancePotato(position);
     }
 
     public String getName() {
@@ -23,7 +17,4 @@ public class Potato {
         return Image;
     }
 
-    public int getMaxDur() {
-        return maxDur;
-    }
 }

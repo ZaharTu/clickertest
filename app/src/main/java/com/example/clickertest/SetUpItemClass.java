@@ -25,7 +25,6 @@ public class SetUpItemClass extends AppCompatActivity {
     private SetUpItemClass(Context context){
         mcontext=context;
         itemArrayList= new ArrayList<>();
-                   //TODO переделать это место
             itemsCountBuy = repository.getMarket();
             itemsCost=mcontext.getResources().getIntArray(R.array.MarketCost);
             itemsName=mcontext.getResources().getStringArray(R.array.MarketName);
