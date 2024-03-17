@@ -1,16 +1,11 @@
 package com.example.clickertest.ProgressBar;
 
 import android.content.Context;
-import android.os.AsyncTask;
+
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,13 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.clickertest.IM_adapter;
+
 import com.example.clickertest.R;
 import com.example.clickertest.Repository;
-import com.example.clickertest.SetUpPotatoClass;
+
 
 import java.util.ArrayList;
-import java.util.logging.LogRecord;
+
 
 public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.MyViewHolder> {
     Context context;
@@ -47,17 +42,20 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProgressBarAdapter.MyViewHolder holder, int position) {
-        holder.tvName.setText(potatoArrayList.get(position).getName());
+        String name = potatoArrayList.get(position).getName();
+        holder.tvName.setText(name);
         holder.imageView.setImageResource(potatoArrayList.get(position).getImage());
-        holder.progressBar.setMax(repository.getMaxDuration(position));
+        holder.progressBar.setMax(repository.getMaxDuration(position,name));
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 int progress = repository.getProgress(position)+ repository.getIncrProgressBar(); // Увеличение прогресса на 1
-                if (progress <= repository.getMaxDuration(position)) {
+                if (progress <= repository.getMaxDuration(position,name)) {
                     holder.progressBar.setProgress(progress);
                     repository.setProgress(position,progress);
                 } else {
+                    holder.progressBar.setMax(repository.getMaxDuration(position,name));
+                    repository.IncrPotatoAll(potatoArrayList.get(position).getName());
                     holder.progressBar.setProgress(0);
                     repository.IncrBalancePotato(position);
                 }

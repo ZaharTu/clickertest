@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ClickerQPro</string>
     <string name="UPSpeed">Ускорить</string>
+    <string name="Potato">Жёлтая картошка</string>
     <string-array name="MarketName">
         <item>Лопата</item>
         <item>Перчатки</item>
@@ -13,19 +14,15 @@
         <item>Грядку вскопает,\nи по спине ударит</item>
         <item>Никто не хочет мозоли</item>
         <item>Садит картошку\nвместо тебя</item>
-        <item>Очень много рабов</item>
+        <item>Больше рабов!</item>
         <item>*ФЫРЧИТ*</item>
         <item>Капец как много \nСВОБОДНЫХ людей</item>
-    </string-array>
-    <string-array name="PotatoName">
-        <item>Жёлтая картошка</item>
-        <item>Красная картошка</item>
     </string-array>
     <string-array name="MarketHint">
         <item>+1$ за клик</item>
         <item>+1 Ускорение</item>
-        <item>+1 Желтая картошка</item>
-        <item>Затычка</item>
+        <item>+1 Желтая\nкартошка</item>
+        <item>+5 максимум\nрабов</item>
         <item>Затычка</item>
         <item>Затычка</item>
     </string-array>

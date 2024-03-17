@@ -11,7 +11,7 @@ public class SetUpPotatoClass {
     private ArrayList<Potato> potatoArrayList ;
     private Context mcontext;
     private final Repository repository = Repository.newInstance();
-    int [] potatoImage={R.drawable.yellowpotato,R.drawable.redpotato};
+    int [] potatoImage={R.drawable.yellowpotato};
     String [] potatoName;
     int[] market;
 
@@ -24,14 +24,12 @@ public class SetUpPotatoClass {
     private SetUpPotatoClass(Context context){
         mcontext=context;
         potatoArrayList= new ArrayList<>();
-        potatoName=context.getResources().getStringArray(R.array.PotatoName);
-        for (int i = 0; i < potatoImage.length; i++) {
-            potatoArrayList.add(new Potato(
-                    potatoName[i],
-                    potatoImage[i]
-                    )
-            );
-        }
+        potatoName= new String[]{context.getResources().getString(R.string.Potato)};
+        potatoArrayList.add(new Potato(
+                potatoName[0],
+                potatoImage[0]
+                )
+        );
         market=repository.getMarket();
         for (int i = 0; i < market[2]; i++) {
             potatoArrayList.add(0,new Potato(potatoName[0],potatoImage[0]));

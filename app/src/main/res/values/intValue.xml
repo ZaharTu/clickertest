@@ -2,8 +2,8 @@
 <resources>
     <integer-array name="MarketCost">
         <item>100</item>
-        <item>250</item>
         <item>500</item>
+        <item>2000</item>
         <item>5000</item>
         <item>15000</item>
         <item>50000</item>

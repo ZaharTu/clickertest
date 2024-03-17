@@ -1,7 +1,6 @@
 package com.example.clickertest;
 
 import android.content.Context;
-import android.database.Observable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.clickertest.databinding.ActivityMarketBinding;
 
 import java.util.ArrayList;
 
@@ -22,6 +20,7 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
     Context context;
     ArrayList<Item> itemArrayList;
     Repository repository = Repository.newInstance();
+    String count;
     public IM_adapter(Context context, ArrayList<Item> itemArrayList){
         this.context=context;
         this.itemArrayList=itemArrayList;
@@ -49,16 +48,31 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
         holder.tvName.setText(itemArrayList.get(position).getNameItem());
         holder.tvAbout.setText(itemArrayList.get(position).getAboutItem());
         holder.tvCost.setText("$"+itemArrayList.get(position).getCost());
+        count= String.valueOf(itemArrayList.get(position).getCountBuy());
         switch (itemArrayList.get(position).getCountBuy()){
             case 1:
-                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупка");
+                count+=" покупка";
+                if (itemArrayList.get(position).getNameItem().equals("Раб")){
+                    count+=" из "+ repository.getMaxSlave();
+                }
+                holder.tvCount.setText(count);
                 break;
             case 2:
             case 3:
             case 4:
-                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупки");
+                count+=" покупки";
+                if (itemArrayList.get(position).getNameItem().equals("Раб")){
+                    count+=" из "+ repository.getMaxSlave();
+                }
+                holder.tvCount.setText(count);
+                break;
             default:
-                holder.tvCount.setText(itemArrayList.get(position).getCountBuy()+" покупок");
+                count+=" покупок";
+                if (itemArrayList.get(position).getNameItem().equals("Раб")){
+                    count+=" из "+ repository.getMaxSlave();
+                }
+                holder.tvCount.setText(count);
+                break;
         }
         holder.tvHint.setText(String.valueOf(itemArrayList.get(position).getHintItem()));
         holder.imageView.setImageResource(itemArrayList.get(position).getImage());

@@ -39,10 +39,14 @@ private boolean flag;
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        repository.setSlavesBefore(repository.getMarket()[2]);
         adapter.setOnButtonClickListener(position -> {
             flag=repository.BuyItem(itemArrayList.get(position).getCost(), position);
             if (flag) {
                 setUpItemClass.incrCountBuy(position);
+                if(position==3){
+                    adapter.notifyItemChanged(2);
+                }
                 adapter.notifyItemChanged(position);
             }
         });

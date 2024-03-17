@@ -1,17 +1,24 @@
 package com.example.clickertest;
 
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 public class Repository {
     private static Repository Repinstance = null;
     private static int Balance;
     private int AddBalanceClick = 1;
     private int IncrProgressBar;
-    private int[] MaxDurations={49,200};
-    private int[] AddBalancePotatoes={1,5};
+    private final int[] PlantPotato={0,0};
+    private int[] MaxDurations={49};
+    private int[] AddBalancePotatoes={1};
     private final int[] Market= new int[6];
-    private int[] ProgressMas={0,0};
+    private int[] ProgressMas={0};
     private boolean flagBuySlave;
+    private int MaxSlave;
+    private int potatoAllAdd=1;
+    private int SlavesBefore;
     private Repository() {
         Balance = 0;
     }
@@ -24,8 +31,10 @@ public class Repository {
     public int getAddBalancePotato(int position){
         return AddBalancePotatoes[position];
     }
-    public int getMaxDuration(int position){
-        return MaxDurations[position];
+    public int getMaxDuration(int position, String name){
+        if(name.equals("Жёлтая картошка"))
+            return MaxDurations[position]*((PlantPotato[0]/200)+1);
+        return 150;
     }
     public boolean isFlagBuySlave() {
         return flagBuySlave;
@@ -43,7 +52,22 @@ public class Repository {
         return Market;
     }
     public int getProgress(int position){return ProgressMas[position];}
-    public void setProgress(int position,int progress){ProgressMas[position]=progress;}
+    public int getMaxSlave() {
+        return MaxSlave;
+    }
+    public int getSlavesBefore() {
+        return SlavesBefore;
+    }
+    public String getProg(){
+        return "Желтой картошки "+PlantPotato[0]+"\nКрасной картошки "+PlantPotato[1];
+    }
+    public void setMaxSlave(int maxSlave) {
+        MaxSlave = maxSlave;
+    }
+    public void setSlavesBefore(int slavesBefore) {
+        SlavesBefore = slavesBefore;
+    }
+    public void setProgress(int position, int progress){ProgressMas[position]=progress;}
     public void setBalance(int balance) {
         Balance = balance;
     }
@@ -56,11 +80,18 @@ public class Repository {
     public void setAddBalanceClick(int addBalanceClick) {
         AddBalanceClick = addBalanceClick;
     }
-    public void IncrAddBalance(){
-        AddBalanceClick+=1;
-    }
     public void IncrBalanceClick(){
         Balance+=AddBalanceClick;
+    }
+    public void IncrPotatoAllAdd(){
+        potatoAllAdd++;
+        for (int i = 0; i < AddBalancePotatoes.length; i++) {
+            AddBalancePotatoes[i]*=potatoAllAdd;
+        }
+    }
+    public void IncrPotatoAll(String name){
+        if(name.equals("Жёлтая картошка")) PlantPotato[0]+=potatoAllAdd;
+        else if (name.equals("Красная картошка")) PlantPotato[1]+=potatoAllAdd;
     }
     public void IncrBalancePotato(int position){
         Balance+=getAddBalancePotato(position);
@@ -83,12 +114,17 @@ public class Repository {
     }
     public boolean BuyItem(int cost,int position){
         if (Balance>=cost){
-            Balance-=cost;
-            Market[position]++;
+            if (position==2 && Market[2]>=MaxSlave) return false;
+            else {
+                Balance-=cost;
+                Market[position]++;
+            }
             Runnable[] actions = {
-                    this::IncrAddBalance,
+                    ()->AddBalanceClick++,
                     ()->setIncrProgressBar(Market[0]),
-                    ()->flagBuySlave=true,
+                    ()-> flagBuySlave=true,
+                    ()->MaxSlave+=5,
+                    this::IncrPotatoAllAdd,
             };
             if (position < actions.length) {
                 actions[position].run();
@@ -97,5 +133,4 @@ public class Repository {
         }
         return false;
     }
-
 }
