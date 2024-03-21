@@ -2,8 +2,5 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Clickertest" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
-    <style name="MyButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@color/ButtonBackground</item>
-    </style>
     <style name="Theme.Clickertest" parent="Base.Theme.Clickertest" />
 </resources>

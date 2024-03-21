@@ -22,8 +22,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private Repository repository;
     private ActivityMainBinding binding;
-    private SetUpPotatoClass setUpPotatoClass;
-    private ArrayList<Potato> potatoArrayList;
+    private SetUpPlantClass setUpPlantClass;
+    private ArrayList<Plant> plantArrayList;
     private TextView money;
     private RecyclerView recyclerView;
     private FIleRedactor fileRedactor;
@@ -53,15 +53,22 @@ public class MainActivity extends AppCompatActivity {
         binding.btnmarket.setOnClickListener(v -> startActivity(MainIntent));
         fileRedactor.setContext(this);
         fileRedactor.ReadFile();
-        setUpPotatoClass= SetUpPotatoClass.newInstance(this);
-        potatoArrayList=setUpPotatoClass.getPotatoArrayList();
+        setUpPlantClass = SetUpPlantClass.newInstance(this);
+        plantArrayList = setUpPlantClass.getPlantArrayList();
         binding.money.setText(repository.getBalance()+"$");
         //ADAPTER START
-        adapter = new ProgressBarAdapter(this,potatoArrayList);
+        adapter = new ProgressBarAdapter(this, plantArrayList);
         recyclerView = binding.RecyclerPotato;
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.setOnButtonClickListener(((position, view) -> {
+            if (view.getId()==R.id.plus_button){
+
+            } else if (view.getId() == R.id.minus_button) {
+
+            }
+        }));
         //ADAPTER END
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -75,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         binding.money.setText(+repository.getBalance()+"$");
-        if (repository.isFlagBuySlave()){
-            for (int i = 0; i <repository.getMarket()[2]-repository.getSlavesBefore() ; i++) {
-                repository.AddMaxDurAndProg();
-                potatoArrayList.add(0,setUpPotatoClass.AddFirstPotato());
+        if (repository.getBuyPlant()>0){
+            for (int i = 0; i < repository.getBuyPlant(); i++) {
+                setUpPlantClass.AddPlant();
             }
-            adapter.setPotatoArrayList(potatoArrayList);
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(new ProgressBarAdapter(this,
+                    setUpPlantClass.getPlantArrayList()));
+            repository.BuyPlantToZero();
         }
     }
 

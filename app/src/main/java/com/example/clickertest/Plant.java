@@ -1,10 +1,11 @@
 package com.example.clickertest;
 
 
-public class Potato {
+public class Plant {
     private String Name;
     private int Image;
-    public Potato(String name, int image) {
+    private int prog;
+    public Plant(String name, int image) {
         Name = name;
         Image = image;
     }
@@ -17,4 +18,11 @@ public class Potato {
         return Image;
     }
 
+    public int getProg() {
+        return prog;
+    }
+
+    public void setProg(int prog) {
+        this.prog = prog;
+    }
 }

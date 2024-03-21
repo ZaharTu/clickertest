@@ -23,6 +23,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:foreground="@drawable/okantovka_recyclerview_main"
         android:id="@+id/RecyclerPotato"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,14 +68,15 @@
         android:src="@drawable/colba2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnmarket" />
+        app:layout_constraintStart_toEndOf="@id/btnmarket"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnProg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Прогресс"
-        android:fontFamily="@font/abc"
+        android:fontFamily="@font/molot"
         android:background="@drawable/button_design"
         app:layout_constraintBottom_toBottomOf="@+id/money"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.clickertest.databinding.ActivityMarketBinding;
 
-public class researches extends AppCompatActivity {
+public class Researches extends AppCompatActivity {
     private ActivityMarketBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

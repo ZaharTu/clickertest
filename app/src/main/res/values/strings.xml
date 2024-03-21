@@ -2,6 +2,8 @@
     <string name="app_name">ClickerQPro</string>
     <string name="UPSpeed">Ускорить</string>
     <string name="Potato">Жёлтая картошка</string>
+    <string name="Plant">Плантация</string>
+    <string name="plus">+</string>
     <string-array name="MarketName">
         <item>Лопата</item>
         <item>Перчатки</item>
@@ -23,7 +25,7 @@
         <item>+1 Ускорение</item>
         <item>+1 Желтая\nкартошка</item>
         <item>+5 максимум\nрабов</item>
-        <item>Затычка</item>
+        <item>+1 к множителю\nкартошки</item>
         <item>Затычка</item>
     </string-array>
 </resources>

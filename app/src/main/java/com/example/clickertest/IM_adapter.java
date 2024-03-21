@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
     Context context;
     ArrayList<Item> itemArrayList;
-    Repository repository = Repository.newInstance();
     String count;
     public IM_adapter(Context context, ArrayList<Item> itemArrayList){
         this.context=context;
@@ -52,8 +51,8 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
         switch (itemArrayList.get(position).getCountBuy()){
             case 1:
                 count+=" покупка";
-                if (itemArrayList.get(position).getNameItem().equals("Раб")){
-                    count+=" из "+ repository.getMaxSlave();
+                if (position==3){
+                    count+=" из 4";
                 }
                 holder.tvCount.setText(count);
                 break;
@@ -61,15 +60,15 @@ public class IM_adapter extends RecyclerView.Adapter<IM_adapter.MyViewHolder> {
             case 3:
             case 4:
                 count+=" покупки";
-                if (itemArrayList.get(position).getNameItem().equals("Раб")){
-                    count+=" из "+ repository.getMaxSlave();
+                if (position==3){
+                    count+=" из 4";
                 }
                 holder.tvCount.setText(count);
                 break;
             default:
                 count+=" покупок";
-                if (itemArrayList.get(position).getNameItem().equals("Раб")){
-                    count+=" из "+ repository.getMaxSlave();
+                if (position==3){
+                    count+=" из 4";
                 }
                 holder.tvCount.setText(count);
                 break;
