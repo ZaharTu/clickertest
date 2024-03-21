@@ -1,4 +1,4 @@
-package com.example.clickertest.ProgressBar;
+package com.example.clickertest;
 
 import android.content.Context;
 
@@ -12,10 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-
-import com.example.clickertest.R;
-import com.example.clickertest.Repository;
 
 
 import java.util.ArrayList;
@@ -45,19 +41,18 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
         String name = potatoArrayList.get(position).getName();
         holder.tvName.setText(name);
         holder.imageView.setImageResource(potatoArrayList.get(position).getImage());
-        holder.progressBar.setMax(repository.getMaxDuration(position,name));
+        holder.progressBar.setMax(repository.getMaxDuration());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 int progress = repository.getProgress(position)+ repository.getIncrProgressBar(); // Увеличение прогресса на 1
-                if (progress <= repository.getMaxDuration(position,name)) {
+                if (progress <= repository.getMaxDuration()) {
                     holder.progressBar.setProgress(progress);
                     repository.setProgress(position,progress);
                 } else {
-                    holder.progressBar.setMax(repository.getMaxDuration(position,name));
-                    repository.IncrPotatoAll(potatoArrayList.get(position).getName());
                     holder.progressBar.setProgress(0);
-                    repository.IncrBalancePotato(position);
+                    holder.progressBar.setMax(repository.getMaxDuration());
+                    repository.IncrPotatoAll(position);
                 }
                 handler.postDelayed(this, 100);
             }

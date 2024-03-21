@@ -10,10 +10,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
-import com.example.clickertest.ProgressBar.Potato;
-import com.example.clickertest.ProgressBar.ProgressBarAdapter;
 import com.example.clickertest.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 

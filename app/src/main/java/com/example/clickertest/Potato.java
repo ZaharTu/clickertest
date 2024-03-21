@@ -1,4 +1,4 @@
-package com.example.clickertest.ProgressBar;
+package com.example.clickertest;
 
 
 public class Potato {

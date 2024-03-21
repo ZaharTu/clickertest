@@ -10,12 +10,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class FIleRedactor {
+public class FIleRedactor { // По-моему это самый простой и эффективный способ сохранения в моем случае
     private File file;
     private Context mcontext;
     private final String FileName = "Resources.txt";
     private final String BalanceStr = "Баланс";
-    private final String AddBalanceStr = "Изменение баланса";
+    private final String AllPotato = "Всего выросло";
     private final String[] MarketItems=
             {"Лопат","Перчаток","Рабов",
             "Плантаций","Тракторов","Деревень"};
@@ -26,44 +26,28 @@ public class FIleRedactor {
     public void ReadFile(){
         File directory = mcontext.getFilesDir();
         file = new File(directory, FileName);
+
         if (file.exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
                 String line;
+                int i=0;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("=");
                     if (parts.length == 2) {
-                        String key = parts[0].trim(); // Ключ (часть до знака "=")
                         String value = parts[1].trim(); // Значение (часть после знака "=")
-                        switch (key) {
-                            case BalanceStr:
-                                repository.setBalance(Integer.parseInt(value));
-                                break;
-                            case AddBalanceStr:
-                                repository.setAddBalanceClick(Integer.parseInt(value));
-                                break;
+                            Runnable[] actions = {
+                                    ()->repository.setBalance(Integer.parseInt(value)),
+                                    ()->repository.setPlantPotato(Integer.parseInt(value)),
+                                    ()->repository.setAddBalanceClick(Integer.parseInt(value) + 1),
+                                    ()->repository.setIncrProgressBar(Integer.parseInt(value)),
+                                    ()->repository.setSlavesBefore(Integer.parseInt(value)),
+                                    ()->repository.setMaxSlave((Integer.parseInt(value)+1)*5),
+                            };
+                        if (i < actions.length) {
+                            actions[i].run();
                         }
-                        for (int i = 0; i < MarketItems.length; i++) {
-                            String item = MarketItems[i];
-                            if (key.equals(item)) {
-                                switch (item) {
-                                    case "Лопат":
-                                        repository.setAddBalanceClick(Integer.parseInt(value) + 1);
-                                        break;
-                                    case "Перчаток":
-                                        repository.setIncrProgressBar(Integer.parseInt(value));
-                                        break;
-                                    case "Рабов":
-                                        repository.setMarketElem(2, Integer.parseInt(value));
-                                        repository.setSlavesBefore(Integer.parseInt(value));
-                                        break;
-                                    case "Плантаций":
-                                        repository.setMaxSlave((Integer.parseInt(value)+1)*5);
-                                        break;
-                                }
-                                repository.setMarketElem(i, Integer.parseInt(value));
-                            }
-                        }
+                        i++;
                     }
                 }
                 reader.close();
@@ -80,10 +64,14 @@ public class FIleRedactor {
                 FileOutputStream fOut = mcontext.openFileOutput(FileName,Context.MODE_PRIVATE);
                 OutputStreamWriter oStrWriter= new OutputStreamWriter(fOut);
                 oStrWriter.write(BalanceStr+"="+repository.getBalance());
-                oStrWriter.write("\n"+AddBalanceStr+"="+repository.getAddBalanceClick());
+                oStrWriter.write("\n"+AllPotato+"="+repository.getPlantPotato());
+                //Записывается Баланс и Общий прогресс
                 for (int i = 0; i < repository.getMarket().length; i++) {
                     oStrWriter.write("\n"+MarketItems[i]+" = "+repository.getMarket()[i]);
-                }
+                } /*
+                Записываю сколько предметов каждого наименования. Можно записывать просто числа,
+                но тогда это будет нечитабельно
+                */
                 oStrWriter.flush();
                 oStrWriter.close();
             } catch (IOException e) {
