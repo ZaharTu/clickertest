@@ -26,7 +26,6 @@ public class FIleRedactor { // По-моему это самый простой 
     public void ReadFile(){
         File directory = mcontext.getFilesDir();
         file = new File(directory, FileName);
-
         if (file.exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -39,10 +38,11 @@ public class FIleRedactor { // По-моему это самый простой 
                             Runnable[] actions = {
                                     ()->repository.setBalance(Integer.parseInt(value)),
                                     ()->repository.setPlantPotato(Integer.parseInt(value)),
-                                    ()->repository.setAddBalanceClick(Integer.parseInt(value) + 1),
                                     ()->repository.setShovel(Integer.parseInt(value)),
+                                    ()->repository.setPerchi(Integer.parseInt(value)),
                                     ()->repository.setSlave(Integer.parseInt(value)),
-                                    ()->repository.setBuyPlant(Integer.parseInt(value))
+                                    ()->repository.setBuyPlant(Integer.parseInt(value)),
+                                    ()->repository.setTraktor(Integer.parseInt(value))
                             };
                         if (i < actions.length) {
                             actions[i].run();

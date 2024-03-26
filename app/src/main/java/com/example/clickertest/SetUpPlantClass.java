@@ -1,6 +1,7 @@
 package com.example.clickertest;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,6 @@ public class SetUpPlantClass {
         for (int i = 0; i < market[3]; i++) {
             AddPlant();
         }
-        repository.BuyPlantToZero();
 
     }
     public ArrayList<Plant> AddPlant(){
@@ -34,8 +34,4 @@ public class SetUpPlantClass {
     public ArrayList<Plant> getPlantArrayList() {
         return plantArrayList;
     }
-    public ArrayList<Plant> getIncrPlant() {
-        return plantArrayList;
-    }
-
 }

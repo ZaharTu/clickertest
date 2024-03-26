@@ -1,5 +1,6 @@
 package com.example.clickertest;
 
+
 import android.util.Log;
 
 public class Repository {
@@ -10,14 +11,11 @@ public class Repository {
     private int AddBalanceClick = 1; // +За клик
     private final int[] IncrProgressBar=new int[5]; // Рост картошки
     private int PlantPotato; // Всего выросло картошки
-    private final int[] MaxDuration= new int[]{51, 52, 53, 54,55}; // Тиков на одну картошку
+    private int MaxDuration= 50; // Тиков на одну плантацию
     private int AddBalancePotatoes=1; //За одну выросшую картошку
-    private final int[] Market= new int[6]; //Массив с покупками
-    private final int[] ProgressMas=new int[5]; //Массив прогрессбаров
-    private int SlaveAll;
-    private final int[] SlavesOnPlant = new  int[5];
+    private final int[] Market={0,0,0,1,0,0}; //Массив с покупками
     private int potatoAllAdd=1; //Множитель картошек за один вырост
-    private int BuyPlant ; //
+    private int CountIncrProgBar ; //
 
     //Singltone
     private Repository() {
@@ -34,11 +32,14 @@ public class Repository {
     public int getAddBalancePotato(){
         return AddBalancePotatoes;
     }
-    public int getMaxDuration(int position){
-        return MaxDuration[position];
+    public int getMaxDuration(){
+        return MaxDuration;
     }
     public int getBalance() {
         return Balance;
+    }
+    public int[] getIncrProgressBarAll() {
+        return IncrProgressBar;
     }
     public int getIncrProgressBar(int position) {
         return IncrProgressBar[position];
@@ -46,44 +47,48 @@ public class Repository {
     public int[] getMarket() {
         return Market;
     }
-    public int getBuyPlant() {
-        return BuyPlant;
-    }
     public String getProg(){
         return "Желтой картошки "+PlantPotato;
     }
     public int getPlantPotato() {
         return PlantPotato;
     }
-
-    public int getSlavesOnPlant(int position) {
-        return SlavesOnPlant[position];
+    public int getAddBalanceClick() {
+        return AddBalanceClick;
     }
+    public int getSumSlaves(){
+        int sum=0;
+        for (int j : IncrProgressBar) {
+            sum += j;
+        }
+        return sum;
+    }
+
     //SetterЫ
 
     public void setBalance(int balance) {
         Balance = balance;
     }
     public void setShovel(int shovel) {
-        Market[1]=shovel;
+        Market[0]=shovel;
+        AddBalanceClick=1+shovel;
     }
-    public void setAddBalanceClick(int addBalanceClick) {
-        AddBalanceClick = addBalanceClick;
-        Market[0]=addBalanceClick-1;
+    public void setPerchi(int perchi) {
+        Market[1]=perchi;
+    }
+    public void setSlave(int slave) {
+        Market[2]=slave;
+    }
+    public void setBuyPlant(int count){
+        Market[3]=count;
+    }
+    public void setTraktor(int traktor) {
+        Market[4]=traktor;
     }
     public void setPlantPotato(int plantPotato) {
         PlantPotato = plantPotato;
     }
-    public void setSlave(int slave){
-        SlaveAll=slave;
-    }
-    public void BuyPlantToZero(){
-        BuyPlant=0;
-    }
-    public void setBuyPlant(int count){
-        BuyPlant=count;
-        Market[3]=count;
-    }
+
 
     //Increment
     public void IncrBalanceClick(){
@@ -93,21 +98,34 @@ public class Repository {
         potatoAllAdd++;
         AddBalancePotatoes*=potatoAllAdd;
     } //+ к зачету картошки в статистике
-    public void IncrPotatoAll(int position){
+    public void IncrPotatoAll(){
         Balance+=getAddBalancePotato();
-        ProgressMas[position]=0;
         PlantPotato+=potatoAllAdd;
-        if (MaxDuration[position]!=MaxDuration[position]*((PlantPotato/200)+1)) {
-            MaxDuration[position]=MaxDuration[position]*((PlantPotato/200)+1);
+        CountIncrProgBar=PlantPotato/200;
+        if (MaxDuration!=MaxDuration+10*CountIncrProgBar) {
+            MaxDuration+=10*CountIncrProgBar;
         }
-    } //Когда выросла картошка
-    public void IncrSlavesOnPlant(int position){
-        SlavesOnPlant[position]++;
+    }//Когда выросла картошка
+    public boolean IncrProgresBar(int position){
+        if (getSumSlaves()<Market[2]){
+            IncrProgressBar[position]++;
+            return true;
+        }
+        return false;
     }
-
+    public boolean DecrProgresBar(int position){
+        if (IncrProgressBar[position]>0) {
+            IncrProgressBar[position]--;
+            return true;
+        }
+        return false;
+    }
     //Buy item
-    public void BuyingPlant(){
-        BuyPlant ++;
+    private void Zatichka(){
+
+    }
+    public void PerchiXing(float mnozh){
+        AddBalanceClick*=mnozh;
     }
     public boolean BuyItem(int cost,int position){
             if (Balance>=cost){
@@ -119,9 +137,9 @@ public class Repository {
                     Market[position]++;
                     Runnable[] actions = {
                             ()->AddBalanceClick++,
-                            ()->notify(),
-                            ()->SlaveAll++,
-                            this::BuyingPlant,
+                            this::Zatichka,
+                            this::Zatichka,
+                            this::Zatichka,
                             this::IncrPotatoAllAdd,
                     };
                     if (position < actions.length) {

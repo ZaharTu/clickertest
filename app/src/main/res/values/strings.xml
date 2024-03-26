@@ -22,9 +22,9 @@
     </string-array>
     <string-array name="MarketHint">
         <item>+1$ за клик</item>
-        <item>+1 Ускорение</item>
-        <item>+1 Желтая\nкартошка</item>
-        <item>+5 максимум\nрабов</item>
+        <item>+1 секунда\nк удвоению</item>
+        <item>+1 Раб</item>
+        <item>Добавляет\nплантацию</item>
         <item>+1 к множителю\nкартошки</item>
         <item>Затычка</item>
     </string-array>
