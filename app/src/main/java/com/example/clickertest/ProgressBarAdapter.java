@@ -27,34 +27,34 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
     Context context;
     ArrayList<Plant> plantArrayList;
     Repository repository = Repository.newInstance();
-    Handler handler;
     Plant plant;
-    ActivityMainBinding binding;
-    private int[] addProgArray; // массив для хранения значений AddProg
+    SetUpPlantClass setUpPlantClass;
+    MyViewModel myViewModel;
+    int slavesRep;
 
-    public ProgressBarAdapter(Context context, ArrayList<Plant> plantArrayList,
-                              ActivityMainBinding binding){
+    public ProgressBarAdapter(Context context){
         this.context=context;
-        this.plantArrayList = plantArrayList;
-        this.handler=new Handler();
-        this.binding=binding;
+        setUpPlantClass=SetUpPlantClass.newInstance(context);
+        plantArrayList= setUpPlantClass.getPlantArrayList();
+        myViewModel=MyViewModel.newInstance(context);
+        slavesRep = repository.getMarket()[2];
     }
     public void handleButtonClick(int position, ProgressBarAdapter.ButtonType buttonType) {
         if (buttonType == ProgressBarAdapter.ButtonType.PLUS) {
-            if (repository.IncrProgresBar(position)) {
+            if (slavesRep>0 && slavesRep<=repository.getMarket()[2]) {
+                plantArrayList.get(position).start();
                 plantArrayList.get(position).IncrSlave();
-                notifyDataSetChanged();
+                slavesRep--;
+                notifyItemChanged(position);
+                myViewModel.updateData(new MyViewModel.Data(slavesRep));
             }
         } else if (buttonType == ProgressBarAdapter.ButtonType.MINUS) {
-            if (repository.DecrProgresBar(position)) {
+            if (slavesRep<repository.getMarket()[2] && plantArrayList.get(position).getSlave()>0) {
+                slavesRep++;
                 plantArrayList.get(position).DincrSlave();
-                notifyDataSetChanged();
+                notifyItemChanged(position);
+                myViewModel.updateData(new MyViewModel.Data(slavesRep));
             }
-        }
-    }
-    public void updateSlavesTextView(String text) {
-        if (binding != null) {
-            binding.SlavesTV.setText(text);
         }
     }
     public enum ButtonType {
@@ -73,40 +73,13 @@ public class ProgressBarAdapter extends RecyclerView.Adapter<ProgressBarAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProgressBarAdapter.MyViewHolder holder, int position) {
         plant=plantArrayList.get(position);
+        plant.setProgressBar(holder.progressBar);
         String name = plant.getName();
         holder.tvName.setText(name);
         holder.imageView.setImageResource(plant.getImage());
         holder.progressBar.setMax(repository.getMaxDuration());
-        addProgArray=repository.getIncrProgressBarAll();
-        new Thread(() -> {
-                    while (true) {
-                        int progress = plant.getProg() + addProgArray[position];
-                        if (progress < repository.getMaxDuration()) {
-                            plant.setProg(progress);
-                            holder.progressBar.setProgress(progress);
-                        } else if (progress >= repository.getMaxDuration()) {
-                            holder.progressBar.setMax(repository.getMaxDuration());
-                            holder.progressBar.setProgress(0);
-                            repository.IncrPotatoAll();
-                            plant.setProg(0);
-                            addProgArray[position] = repository.getIncrProgressBar(position);
-                        }
-                        try {
-
-                            Thread.sleep(100); // Пауза в 100 миллисекунд
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-        }).start();
-        holder.buttonPlus.setOnClickListener(view -> {
-            handleButtonClick(position, ButtonType.PLUS);
-            updateSlavesTextView(repository.getSumSlaves() + "/" + repository.getMarket()[2] + " рабов");
-        });
-        holder.buttonMinus.setOnClickListener(view -> {
-            handleButtonClick(position, ButtonType.MINUS);
-            updateSlavesTextView(repository.getSumSlaves() + "/" + repository.getMarket()[2] + " рабов");
-        });
+        holder.buttonPlus.setOnClickListener(view -> handleButtonClick(position, ButtonType.PLUS));
+        holder.buttonMinus.setOnClickListener(view -> handleButtonClick(position, ButtonType.MINUS));
         holder.tvSlaves.setText(""+plantArrayList.get(position).getSlave());
 
     }

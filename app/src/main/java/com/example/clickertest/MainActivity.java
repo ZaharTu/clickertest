@@ -1,6 +1,8 @@
 package com.example.clickertest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,28 +31,27 @@ public class MainActivity extends AppCompatActivity {
     private Repository repository;
     private ActivityMainBinding binding;
     private SetUpPlantClass setUpPlantClass;
-    private ArrayList<Plant> plantArrayList;
     private TextView money;
     private RecyclerView recyclerView;
     private FIleRedactor fileRedactor;
     private ProgressBarAdapter adapter;
     private MediaPlayer mediaPlayer;
-    private final Handler handler=new Handler(Looper.getMainLooper());
-    private float PerchiCount;
-    private float timerPerchi;
-    private float timerPerchiKD;
-    private boolean flagPerchiKD;
+    private MyViewModel myViewModel;
+    private HandlerX2Btn handlerX2Btn;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
+        myViewModel= MyViewModel.newInstance(this);
+        handlerX2Btn= new HandlerX2Btn(this);
         repository=Repository.newInstance();
-        money=binding.money;
         fileRedactor=new FIleRedactor();
         fileRedactor.setContext(this);
         fileRedactor.ReadFile();
+        setUpPlantClass = SetUpPlantClass.newInstance(this);
+        money=binding.money;
         mediaPlayer=MediaPlayer.create(this,R.raw.digging);
         Intent MainIntent = new Intent(this, MarketActivity.class);
         Animation animPotatoBtn = AnimationUtils.loadAnimation(this, R.anim.main_potato_anim);
@@ -64,53 +65,34 @@ public class MainActivity extends AppCompatActivity {
                         repository.getProg(),
                         Snackbar.LENGTH_SHORT).show());
         binding.btnmarket.setOnClickListener(v -> startActivity(MainIntent));
-        binding.SlavesTV.setText(repository.getSumSlaves()+
+        binding.SlavesTV.setText(repository.getMarket()[2]+
                 "/"+repository.getMarket()[2]+" рабов");
-        setUpPlantClass = SetUpPlantClass.newInstance(this);
-        plantArrayList = setUpPlantClass.getPlantArrayList();
         binding.money.setText(repository.getBalance ()+"$");
         //ADAPTER START
-        adapter = new ProgressBarAdapter(this, plantArrayList,binding);
+        adapter = new ProgressBarAdapter(this);
         recyclerView = binding.RecyclerPotato;
         recyclerView.setItemAnimator(null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        binding.Perchi.setOnClickListener(v -> {
-            if (!flagPerchiKD) {
-                PerchiCount = repository.getMarket()[1];
-                flagPerchiKD=true;
-                if (timerPerchi == 0) {
-                    timerPerchi = PerchiCount;
-                    repository.PerchiXing(2);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (timerPerchi > 0.1) {
-                                timerPerchi -= 0.1;
-                                binding.Perchi.setText(String.format("%.1f", timerPerchi) + "/" + PerchiCount);
-                                handler.postDelayed(this, 100);
-                            } else {
-                                repository.PerchiXing(0.5F);
-                                timerPerchi = 0;
-                                binding.Perchi.setText("х2 Клик");
-                                timerPerchiKD = 10f;
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (timerPerchiKD > 0.1) {
-                                            binding.PerchiKD.setText(String.format("%.1f", timerPerchiKD) + "/" + 10f);
-                                            timerPerchiKD -= 0.1;
-                                            handler.postDelayed(this, 100);
-                                        } else {
-                                            binding.PerchiKD.setText(0.0 + "/" + 10.0);
-                                            flagPerchiKD=false;
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
+        binding.Perchi.setOnClickListener(v-> {
+            if (repository.getMarket()[1] > 0) {
+                handlerX2Btn.start();
+            }else {
+                Snackbar.make(this,binding.getRoot(),
+                        "Купите перчатки",Snackbar.LENGTH_SHORT).show();
+            }
                 }
+        );
+        myViewModel.getLiveData().observe(this, data -> {
+            if (data.getStringData()!=null) {
+                if (data.getIntData() == 1) {
+                    binding.Perchi.setText(data.getStringData());
+                } else if (data.getIntData() == 2) {
+                    binding.PerchiKD.setText(data.getStringData());
+                }
+            }else {
+                binding.SlavesTV.setText(data.getIntData()+
+                        "/"+repository.getMarket()[2]+" рабов");
             }
         });
 
@@ -118,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(() -> money.setText(repository.getBalance()+"$"));
+                runOnUiThread(() -> {
+                    money.setText(repository.getBalance()+"$");
+                });
             }
         },0L,100L);
     }
@@ -127,12 +111,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        binding.Perchi.setText("х2 Клик");
         binding.money.setText(repository.getBalance()+"$");
-        setUpPlantClass = SetUpPlantClass.newInstance(this);
-        recyclerView.setAdapter(new ProgressBarAdapter(this,
-                setUpPlantClass.getPlantArrayList(),binding));
-        binding.SlavesTV.setText(repository.getSumSlaves()
-                +"/"+repository.getMarket()[2]+" рабов");
+        int delta=repository.getMarket()[3]-adapter.getItemCount();
+        if (delta>0){
+            for (int i = 0; i < delta; i++) {
+                setUpPlantClass.AddPlant();
+            }
+        }
+        adapter.notifyItemRangeInserted(adapter.getItemCount()-delta, delta);
     }
 
     @Override

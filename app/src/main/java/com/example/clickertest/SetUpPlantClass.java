@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class SetUpPlantClass {
     private static SetUpPlantClass SetInstence = null;
-    private ArrayList<Plant> plantArrayList;
+    private final ArrayList<Plant> plantArrayList;
     private final Repository repository = Repository.newInstance();
     int plantImage=R.drawable.plant;
     String plantName;
@@ -27,9 +27,8 @@ public class SetUpPlantClass {
         }
 
     }
-    public ArrayList<Plant> AddPlant(){
+    public void AddPlant(){
         plantArrayList.add(new Plant(plantName,plantImage));
-        return plantArrayList;
     }
     public ArrayList<Plant> getPlantArrayList() {
         return plantArrayList;

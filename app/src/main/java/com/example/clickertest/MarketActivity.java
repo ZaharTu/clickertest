@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.clickertest.databinding.ActivityMarketBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -47,6 +48,14 @@ private boolean flag;
                     adapter.notifyItemChanged(2);
                 }
                 adapter.notifyItemChanged(position);
+            }else if (position==4 && repository.getMarket()[3]==4) {
+                Snackbar.make(this,binding.getRoot(),
+                        "Это максимум",
+                        Snackbar.LENGTH_SHORT).show();
+            }else {
+                Snackbar.make(this,binding.getRoot(),
+                        "Накопайте ещё картошки,\nвам не хватает денег",
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
         //ADAPTER_CREATE END

@@ -9,13 +9,12 @@ public class Repository {
     private static Repository Repinstance = null;
     private static int Balance;
     private int AddBalanceClick = 1; // +За клик
-    private final int[] IncrProgressBar=new int[5]; // Рост картошки
     private int PlantPotato; // Всего выросло картошки
     private int MaxDuration= 50; // Тиков на одну плантацию
     private int AddBalancePotatoes=1; //За одну выросшую картошку
     private final int[] Market={0,0,0,1,0,0}; //Массив с покупками
     private int potatoAllAdd=1; //Множитель картошек за один вырост
-    private int CountIncrProgBar ; //
+    private int CountIncrProgBar=1 ; //
 
     //Singltone
     private Repository() {
@@ -38,12 +37,6 @@ public class Repository {
     public int getBalance() {
         return Balance;
     }
-    public int[] getIncrProgressBarAll() {
-        return IncrProgressBar;
-    }
-    public int getIncrProgressBar(int position) {
-        return IncrProgressBar[position];
-    }
     public int[] getMarket() {
         return Market;
     }
@@ -53,40 +46,39 @@ public class Repository {
     public int getPlantPotato() {
         return PlantPotato;
     }
-    public int getAddBalanceClick() {
-        return AddBalanceClick;
-    }
-    public int getSumSlaves(){
-        int sum=0;
-        for (int j : IncrProgressBar) {
-            sum += j;
-        }
-        return sum;
-    }
 
     //SetterЫ
 
-    public void setBalance(int balance) {
-        Balance = balance;
-    }
-    public void setShovel(int shovel) {
-        Market[0]=shovel;
-        AddBalanceClick=1+shovel;
-    }
-    public void setPerchi(int perchi) {
-        Market[1]=perchi;
-    }
-    public void setSlave(int slave) {
-        Market[2]=slave;
-    }
-    public void setBuyPlant(int count){
-        Market[3]=count;
-    }
-    public void setTraktor(int traktor) {
-        Market[4]=traktor;
-    }
-    public void setPlantPotato(int plantPotato) {
-        PlantPotato = plantPotato;
+    public void ReadFileSave(int[] fileRead){
+        for (int i = 0; i < fileRead.length; i++) {
+            int value = fileRead[i];
+            Log.d("aboba","i="+i+", value ="+value);
+            switch (i){
+                case 0:
+                    Balance=value;
+                    break;
+                case 1:
+                    PlantPotato=value;
+                    break;
+                case 2: // лопата
+                    Market[0]=value;
+                    AddBalanceClick=value+1;
+                    break;
+                case 4:
+                    Market[2]=value;
+                    break;// раб
+                case 6:
+                    Market[4]=value;
+                    potatoAllAdd=value;
+                    AddBalancePotatoes*=value;
+                    break;// трактор
+                case 3: // перчатка
+                case 5: // плантация
+                case 7: // деревня
+                    Market[i-2]=fileRead[i];
+                    break;
+            }
+        }
     }
 
 
@@ -94,10 +86,6 @@ public class Repository {
     public void IncrBalanceClick(){
         Balance+=AddBalanceClick;
     } //Увеличение баланса при клике
-    public void IncrPotatoAllAdd(){
-        potatoAllAdd++;
-        AddBalancePotatoes*=potatoAllAdd;
-    } //+ к зачету картошки в статистике
     public void IncrPotatoAll(){
         Balance+=getAddBalancePotato();
         PlantPotato+=potatoAllAdd;
@@ -106,24 +94,8 @@ public class Repository {
             MaxDuration+=10*CountIncrProgBar;
         }
     }//Когда выросла картошка
-    public boolean IncrProgresBar(int position){
-        if (getSumSlaves()<Market[2]){
-            IncrProgressBar[position]++;
-            return true;
-        }
-        return false;
-    }
-    public boolean DecrProgresBar(int position){
-        if (IncrProgressBar[position]>0) {
-            IncrProgressBar[position]--;
-            return true;
-        }
-        return false;
-    }
-    //Buy item
-    private void Zatichka(){
 
-    }
+    //Buy item
     public void PerchiXing(float mnozh){
         AddBalanceClick*=mnozh;
     }
@@ -135,15 +107,14 @@ public class Repository {
                 else {
                     Balance-=cost;
                     Market[position]++;
-                    Runnable[] actions = {
-                            ()->AddBalanceClick++,
-                            this::Zatichka,
-                            this::Zatichka,
-                            this::Zatichka,
-                            this::IncrPotatoAllAdd,
-                    };
-                    if (position < actions.length) {
-                        actions[position].run();
+                    switch (position){
+                        case 0:
+                            AddBalanceClick++;
+                            break;
+                        case 4:
+                            potatoAllAdd++;
+                            AddBalancePotatoes=1+potatoAllAdd;
+                            break;
                     }
                     return true;
                 }
